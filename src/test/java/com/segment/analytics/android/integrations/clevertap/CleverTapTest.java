@@ -5,29 +5,16 @@ import android.app.Application;
 import android.app.usage.UsageEvents;
 import android.os.Bundle;
 import com.clevertap.android.sdk.CleverTapAPI;
-import com.clevertap.android.sdk.EventHandler;
-import com.clevertap.android.sdk.ProfileHandler;
+
 import com.segment.analytics.Analytics;
 import com.segment.analytics.Properties;
 import com.segment.analytics.Traits;
 import com.segment.analytics.ValueMap;
 import com.segment.analytics.android.integrations.clevertap.CleverTapIntegration;
-import com.segment.analytics.integrations.IdentifyPayload;
 import com.segment.analytics.integrations.Logger;
-import com.segment.analytics.integrations.TrackPayload;
-import com.segment.analytics.test.AliasPayloadBuilder;
-import com.segment.analytics.test.IdentifyPayloadBuilder;
 import com.segment.analytics.test.ScreenPayloadBuilder;
-import com.segment.analytics.test.TrackPayloadBuilder;
 
 import java.lang.Exception;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import org.hamcrest.Description;
-import org.hamcrest.TypeSafeMatcher;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import static com.segment.analytics.Utils.createTraits;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -53,8 +40,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.math.BigDecimal;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
@@ -67,22 +52,18 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({ "org.mockito.*", "org.robolectric.*", "android.*", "org.json.*" })
-@PrepareForTest({CleverTapAPI.class, EventHandler.class, ProfileHandler.class})
+@PrepareForTest(CleverTapAPI.class)
 
 public class CleverTapTest {
     @Mock CleverTapAPI clevertap;
-    //@Mock EventHandler clevertap.event;
-    //@Mock ProfileHandler clevertap.profile;
     @Mock Application context;
     Logger logger;
     @Mock Analytics analytics;
 
-    //CleverTapAPI clevertap;
     CleverTapIntegration integration;
 
     @Before
     public void setUp() {
-        CleverTapAPI.changeCredentials("4W9-747-W54Z", "a4a-c04");
         initMocks(this);
         mockStatic(CleverTapAPI.class);
         logger = Logger.with(Analytics.LogLevel.DEBUG);
@@ -98,23 +79,6 @@ public class CleverTapTest {
         integration = new CleverTapIntegration(clevertap, logger);
     }
 
-    @Test
-    public void factory() {
-        ValueMap settings = new ValueMap().putValue("CleverTapAccountID", "4W9-747-W54Z").putValue("CleverTapAccountToken", "a4a-c04");
-        CleverTapIntegration integration = (CleverTapIntegration) CleverTapIntegration.FACTORY.create(settings, analytics);
-        /*
-        verifyStatic();
-        CleverTapAPI.changeCredentials("4W9-747-W54Z", "a4a-c04");
-        verifyStatic();
-        try {
-
-            CleverTapAPI.getInstance(context);
-        } catch (Exception e) {
-            // ignore
-        }
-        */
-        verifyNoMoreCleverTapInteractions();
-    }
 
     @Test
     public void activityCreate() {
@@ -169,30 +133,6 @@ public class CleverTapTest {
     public void activityDestroy() {
         Activity activity = mock(Activity.class);
         integration.onActivityDestroyed(activity);
-        verifyNoMoreCleverTapInteractions();
-    }
-
-    @Test
-    public void alias() {
-        integration.alias(new AliasPayloadBuilder().traits(createTraits("foo")).newId("bar").build());
-        verifyNoMoreCleverTapInteractions();
-    }
-
-    @Test
-    public void identify() {
-        Traits traits = new Traits();
-        traits.putEmail("foo@foo.com");
-        traits.putName("first last");
-        traits.putPhone("5555551234");
-        IdentifyPayload identifyPayload = new IdentifyPayloadBuilder().traits(traits).build();
-        integration.identify(identifyPayload);
-        verifyNoMoreCleverTapInteractions();
-    }
-
-    @Test
-    public void event() {
-        TrackPayload trackPayload = new TrackPayloadBuilder().event("myEvent").build();
-        integration.track(trackPayload);
         verifyNoMoreCleverTapInteractions();
     }
 
