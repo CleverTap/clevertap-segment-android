@@ -1,8 +1,8 @@
 analytics-android-integration-clevertap
 ======================================
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.clevertap.android/clevertap-segment-integration/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.clevertap.android/clevertap-segment-integration)
-[![Javadocs](http://javadoc-badge.appspot.com/com.clevertap.android/clevertap-segment-integration.svg?label=javadoc)](http://javadoc-badge.appspot.com/com.clevertap.android/clevertap-segment-integration)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.clevertap.android/clevertap-segment-android/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.clevertap.android/clevertap-segment-integration)
+[![Javadocs](http://javadoc-badge.appspot.com/com.clevertap.android/clevertap-segment-android.svg?label=javadoc)](http://javadoc-badge.appspot.com/com.clevertap.android/clevertap-segment-integration)
 
 CleverTap integration for [analytics-android](https://github.com/segmentio/analytics-android).
 
