@@ -30,8 +30,8 @@ import java.util.Set;
 public class CleverTapIntegration extends Integration<CleverTapAPI> {
     private final CleverTapAPI cl;
     private static final String CLEVERTAP_KEY = "CleverTap";
-    private static final String ACCOUNT_ID_KEY = "CleverTapAccountID";
-    private static final String ACCOUNT_TOKEN_KEY = "CleverTapAccountToken";
+    private static final String ACCOUNT_ID_KEY = "clevertap_account_id";
+    private static final String ACCOUNT_TOKEN_KEY = "clevertap_account_token";
 
     private static final Set<String> MALE_TOKENS = new HashSet<String>(Arrays.asList("M",
             "MALE"));

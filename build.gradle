@@ -27,7 +27,7 @@ ext {
   siteUrl = 'https://github.com/CleverTap/clevertap-segment-android'
   gitUrl = 'https://github.com/CleverTap/clevertap-segment-android.git'
 
-  libraryVersion = '1.0.0-alpha'
+  libraryVersion = '1.0.1'
 
   developerId = 'clevertap'
   developerName = 'CleverTap'
