@@ -32,7 +32,7 @@ public class CleverTapAndroidTest extends AndroidTestCase {
         assertNotNull(context);
 
         Analytics analytics = new Analytics.Builder(context, "foo" + System.currentTimeMillis()).build();
-        ValueMap settings = new ValueMap().putValue("CleverTapAccountID", "foo").putValue("CleverTapAccountToken", "bar");
+        ValueMap settings = new ValueMap().putValue("clevertap_account_id", "foo").putValue("clevertap_account_token", "bar");
         integration = (CleverTapIntegration) CleverTapIntegration.FACTORY.create(settings, analytics);
         assertNotNull(integration);
 

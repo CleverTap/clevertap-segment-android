@@ -27,7 +27,7 @@ ext {
   siteUrl = 'https://github.com/CleverTap/clevertap-segment-android'
   gitUrl = 'https://github.com/CleverTap/clevertap-segment-android.git'
 
-  libraryVersion = '1.0.1'
+  libraryVersion = '1.0.2'
 
   developerId = 'clevertap'
   developerName = 'CleverTap'
@@ -150,7 +150,7 @@ dependencies {
 
   provided 'com.segment.analytics.android:analytics:4.0.0'
 
-  compile 'com.clevertap.android:clevertap-android-sdk:2.0.10'
+  compile 'com.clevertap.android:clevertap-android-sdk:2.0.11'
 
   testCompile 'junit:junit:4.12'
   testCompile('org.robolectric:robolectric:3.0') {
