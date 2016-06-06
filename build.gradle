@@ -27,7 +27,7 @@ ext {
   siteUrl = 'https://github.com/CleverTap/clevertap-segment-android'
   gitUrl = 'https://github.com/CleverTap/clevertap-segment-android.git'
 
-  libraryVersion = '1.0.2'
+  libraryVersion = '1.0.3'
 
   developerId = 'clevertap'
   developerName = 'CleverTap'
@@ -51,7 +51,7 @@ apply plugin: 'com.jfrog.bintray'
 
 android {
   compileSdkVersion 23
-  buildToolsVersion '23.0.2'
+  buildToolsVersion '23.0.3'
 
   defaultConfig {
     minSdkVersion 14
@@ -150,7 +150,9 @@ dependencies {
 
   provided 'com.segment.analytics.android:analytics:4.0.0'
 
-  compile 'com.clevertap.android:clevertap-android-sdk:2.0.11'
+  compile 'com.clevertap.android:clevertap-android-sdk:2.1.1'
+  compile 'com.android.support:support-v4:23.4.0'
+  compile 'com.google.android.gms:play-services-gcm:9.0.2'
 
   testCompile 'junit:junit:4.12'
   testCompile('org.robolectric:robolectric:3.0') {
@@ -171,7 +173,7 @@ dependencies {
   testCompile 'org.powermock:powermock-classloading-xstream:1.6.2'
 
   androidTestCompile 'com.segment.analytics.android:analytics-tests:4.0.0'
-  androidTestCompile 'com.android.support:support-annotations:23.1.1'
+  androidTestCompile 'com.android.support:support-annotations:23.4.0'
   androidTestCompile 'com.android.support.test:runner:0.4.1'
   androidTestCompile 'com.android.support.test:rules:0.4.1'
   androidTestCompile 'org.hamcrest:hamcrest-library:1.3'
