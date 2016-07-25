@@ -45,31 +45,6 @@ public class CleverTapAndroidTest extends AndroidTestCase {
         assertNotNull(clevertap);
     }
 
-    public void testIdentify() {
-        String testUserId = "testUser" + System.currentTimeMillis();
-        Traits traits = createTraits(testUserId);
-        String name = "FooName";
-        traits.putName(name);
-        traits.putGender("female");
-        traits.putPhone("5555551234");
-        traits.putEmail("foo@foo.com");
-        IdentifyPayload identifyPayload = new IdentifyPayloadBuilder().traits(traits).build();
-
-        integration.identify(identifyPayload);
-        assertEquals(testUserId, clevertap.profile.getProperty("Identity"));
-        assertEquals(name, clevertap.profile.getProperty("Name"));
-        assertEquals("F", clevertap.profile.getProperty("Gender"));
-        assertEquals("5555551234", clevertap.profile.getProperty("Phone"));
-        assertEquals("foo@foo.com", clevertap.profile.getProperty("Email"));
-    }
-
-    public void testAlias() {
-        String userId = "654321abc";
-        AliasPayload aliasPayload = new AliasPayloadBuilder().newId(userId).build();
-        integration.alias(aliasPayload);
-        assertEquals(userId, clevertap.profile.getProperty("Identity"));
-    }
-
     public void testTrack() {
         TrackPayload trackPayload = new TrackPayloadBuilder().event("myEvent").build();
         integration.track(trackPayload);

@@ -27,7 +27,7 @@ ext {
   siteUrl = 'https://github.com/CleverTap/clevertap-segment-android'
   gitUrl = 'https://github.com/CleverTap/clevertap-segment-android.git'
 
-  libraryVersion = '1.0.6'
+  libraryVersion = '1.0.7'
 
   developerId = 'clevertap'
   developerName = 'CleverTap'
@@ -95,8 +95,7 @@ bintray {
     version {
       desc = libraryDescription
       gpg {
-        sign = false //Determines whether to GPG sign the files. The default is false
-        //Optional. The passphrase for GPG signing'
+        sign = false
       }
     }
   }
@@ -148,7 +147,6 @@ dependencies {
   }
 
   provided 'com.segment.analytics.android:analytics:4.0.0'
-
   compile 'com.clevertap.android:clevertap-android-sdk:2.2.0'
   compile 'com.android.support:support-v4:23.4.0'
   compile 'com.google.android.gms:play-services-gcm:9.0.2'

@@ -136,12 +136,6 @@ public class CleverTapTest {
         verifyNoMoreCleverTapInteractions();
     }
 
-    @Test
-    public void screen() {
-        integration.screen(new ScreenPayloadBuilder().name("foo").build());
-        verifyNoMoreCleverTapInteractions();
-    }
-
     private void verifyNoMoreCleverTapInteractions() {
         verifyNoMoreInteractions(CleverTapAPI.class);
         verifyNoMoreInteractions(clevertap);
