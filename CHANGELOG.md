@@ -1,4 +1,10 @@
 
+Version 1.0.8 (31 August, 2016)
+===================================
+*(Supports analytics-android 4.0.+ and CleverTap 3.0.0)*
+
+  * update for CleverTap 3.0.0
+
 Version 1.0.7 (25 July, 2016)
 ===================================
 *(Supports analytics-android 4.0.+ and CleverTap 2.2.0)*
