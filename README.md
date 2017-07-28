@@ -6,6 +6,36 @@ analytics-android-integration-clevertap
 
 CleverTap integration for [analytics-android](https://github.com/segmentio/analytics-android).
 
+## Installation
+
+To install the Segment-CleverTap integration, simply add this line to your gradle file:
+
+```
+compile 'com.clevertap.android:clevertap-segment-android:+'
+
+```
+
+## Usage
+
+After adding the dependency, you must register the integration.  To do this, import the CleverTap integration:
+
+
+```
+import com.segment.analytics.android.integrations.clevertap.CleverTapIntegration;
+
+```
+
+And add the following line:
+
+```
+analytics = new Analytics.Builder(this, "write_key")
+                .use(CleverTapIntegration.FACTORY)
+                .build();
+```
+
+Please see [our documentation](https://segment.com/docs/integrations/clevertap/) for more information.
+
+
 ## License
 
 ```
