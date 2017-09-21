@@ -17,13 +17,20 @@ import com.segment.analytics.integrations.IdentifyPayload;
 import com.segment.analytics.integrations.Integration;
 import com.segment.analytics.integrations.TrackPayload;
 import com.segment.analytics.internal.Utils;
+import com.segment.analytics.Properties.Product;
 
+import org.json.JSONObject;
+
+import static com.segment.analytics.internal.Utils.isNullOrEmpty;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -32,19 +39,21 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
     private static final String CLEVERTAP_KEY = "CleverTap";
     private static final String ACCOUNT_ID_KEY = "clevertap_account_id";
     private static final String ACCOUNT_TOKEN_KEY = "clevertap_account_token";
+    private static final String ACCOUNT_REGION_KEY = "region";
 
     private static final Set<String> MALE_TOKENS = new HashSet<String>(Arrays.asList("M",
             "MALE"));
     private static final Set<String> FEMALE_TOKENS = new HashSet<String>(Arrays.asList("F",
             "FEMALE"));
 
-    static final Map<String, String> MAP_KNOWN_PROFILE_FIELDS;
+    private static final Map<String, String> MAP_KNOWN_PROFILE_FIELDS;
 
     static {
         Map<String, String> knownFieldsMap = new LinkedHashMap<>();
         knownFieldsMap.put("phone", "Phone");
         knownFieldsMap.put("name", "Name");
         knownFieldsMap.put("email", "Email");
+        knownFieldsMap.put("birthday", "DOB");
         MAP_KNOWN_PROFILE_FIELDS = Collections.unmodifiableMap(knownFieldsMap);
     }
 
@@ -56,12 +65,17 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
             try {
                 String accountID = settings.getString(ACCOUNT_ID_KEY);
                 String accountToken = settings.getString(ACCOUNT_TOKEN_KEY);
+                String region = settings.getString(ACCOUNT_REGION_KEY);
+                if (region != null) {
+                    region = region.replace(".", "");
+                }
+
                 if (Utils.isNullOrEmpty(accountID) || Utils.isNullOrEmpty(accountToken)) {
                     logger.info("CleverTap+Segment integration attempt to initialize without account id or account token.");
                     return null;
                 }
 
-                CleverTapAPI.changeCredentials(accountID, accountToken);
+                CleverTapAPI.changeCredentials(accountID, accountToken, region);
                 cl = CleverTapAPI.getInstance(analytics.getApplication());
                 logger.info("Configured CleverTap+Segment integration and initialized CleverTap.");
             } catch (CleverTapMetaDataNotFoundException | CleverTapPermissionsNotSatisfied e) {
@@ -150,12 +164,6 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
         try {
             ValueMap profile = new ValueMap(Utils.transform(traits, MAP_KNOWN_PROFILE_FIELDS));
 
-            //Date birthday = traits.birthday();
-            Date birthday = null;
-            if (birthday != null) {
-                profile.put("DOB", birthday);
-            }
-
             String userId = traits.userId();
             if (!Utils.isNullOrEmpty(userId)) {
                 profile.put("Identity", userId);
@@ -186,6 +194,11 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
 
         String event = track.event();
         if (event == null) {
+            return;
+        }
+
+        if (event.equals("Order Completed")) {
+            handleOrderCompleted(track);
             return;
         }
 
@@ -220,5 +233,67 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
     @Override
     public CleverTapAPI getUnderlyingInstance() {
         return cl;
+    }
+
+    private void handleOrderCompleted(TrackPayload track) {
+        if (!track.event().equals("Order Completed")) return;
+
+        Properties properties = track.properties();
+
+        HashMap<String, Object> details = new HashMap<>();
+        ArrayList<HashMap<String, Object>> items = new ArrayList<>();
+
+        details.put("Amount", properties.total());
+
+        final String orderId = properties.orderId();
+        if (orderId != null) {
+            details.put("Charged ID", properties.orderId());
+        }
+
+        JSONObject propertiesJson = properties.toJsonObject();
+        Iterator<?> keys = propertiesJson.keys();
+        while (keys.hasNext()) {
+            try {
+                String key = (String) keys.next();
+                if (key.equals("products")) continue;
+                details.put(key, propertiesJson.get(key));
+
+            } catch (Throwable t) {
+                // no-op
+            }
+        }
+
+        List<Product> products = properties.products();
+        if (!isNullOrEmpty(products)) {
+            for (int i = 0; i < products.size(); i++) {
+                try {
+                    Product product = products.get(i);
+                    HashMap<String, Object> item = new HashMap<>();
+
+                    if (product.id() != null) {
+                        item.put("id", product.id());
+                    }
+                    if (product.name() != null) {
+                        item.put("name", product.name());
+                    }
+                    if (product.sku() != null) {
+                        item.put("sku", product.sku());
+                    }
+                    item.put("price", product.price());
+
+                    items.add(item);
+                } catch (Throwable t) {
+                    mLogger.error(t, "CleverTap: Error handling Order Completed product");
+                    cl.event.pushError("Error handling Order Completed product: " + t.getMessage(), 512);
+                }
+            }
+        }
+
+        try {
+            cl.event.push(CleverTapAPI.CHARGED_EVENT, details, items);
+        } catch (Throwable t) {
+            mLogger.error(t, "CleverTap: Error handling Order Completed");
+            cl.event.pushError("Error handling Order Completed: "+ t.getMessage(), 512);
+        }
     }
 }
