@@ -30,7 +30,7 @@ ext {
   siteUrl = 'https://github.com/CleverTap/clevertap-segment-android'
   gitUrl = 'https://github.com/CleverTap/clevertap-segment-android.git'
 
-  libraryVersion = '1.0.12'
+  libraryVersion = '1.0.13'
 
   developerId = 'clevertap'
   developerName = 'CleverTap'
@@ -149,7 +149,7 @@ dependencies {
 
   provided 'com.segment.analytics.android:analytics:4.0.0'
   provided 'com.android.support:support-v4:26.0.2'
-  compile 'com.clevertap.android:clevertap-android-sdk:3.1.6'
+  compile 'com.clevertap.android:clevertap-android-sdk:3.1.7'
 
   provided files("libs/play-services-base-9.2.1.jar")
   provided files("libs/play-services-basement-9.2.1.jar")
