@@ -108,7 +108,7 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
 
         CleverTapAPI.setAppForeground(true);
         try {
-            cl.event.pushNotificationEvent(activity.getIntent().getExtras());
+            cl.event.pushNotificationClickedEvent(activity.getIntent().getExtras());
         } catch (Throwable t) {
             // Ignore
         }

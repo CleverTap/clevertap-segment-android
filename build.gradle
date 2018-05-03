@@ -30,7 +30,7 @@ ext {
   siteUrl = 'https://github.com/CleverTap/clevertap-segment-android'
   gitUrl = 'https://github.com/CleverTap/clevertap-segment-android.git'
 
-  libraryVersion = '1.0.14'
+  libraryVersion = '1.0.15'
 
   developerId = 'clevertap'
   developerName = 'CleverTap'
@@ -51,7 +51,7 @@ apply plugin: 'com.jfrog.bintray'
 
 android {
   compileSdkVersion 26
-  buildToolsVersion '26.0.1'
+  buildToolsVersion '26.0.2'
 
   defaultConfig {
     minSdkVersion 14
@@ -147,9 +147,9 @@ dependencies {
 
   }
 
-  provided 'com.segment.analytics.android:analytics:4.0.0'
-  provided 'com.android.support:support-v4:26.0.2'
-  compile 'com.clevertap.android:clevertap-android-sdk:3.1.8'
+  provided 'com.segment.analytics.android:analytics:4.3.1'
+  provided 'com.android.support:support-v4:26.1.0'
+  compile 'com.clevertap.android:clevertap-android-sdk:3.1.9'
 
   provided files("libs/play-services-base-9.2.1.jar")
   provided files("libs/play-services-basement-9.2.1.jar")
@@ -167,7 +167,7 @@ dependencies {
 
   testCompile 'com.segment.analytics.android:analytics-tests:4.0.0'
 
-  testCompile 'org.assertj:assertj-core:1.7.1'
+  testCompile 'org.assertj:assertj-core:2.6.0'
 
   testCompile 'org.mockito:mockito-core:1.10.19'
 
@@ -178,9 +178,9 @@ dependencies {
   testCompile 'org.powermock:powermock-classloading-xstream:1.6.2'
 
   androidTestCompile 'com.segment.analytics.android:analytics-tests:4.0.0'
-  androidTestCompile 'com.android.support:support-annotations:25.3.1'
-  androidTestCompile 'com.android.support.test:runner:0.5'
-  androidTestCompile 'com.android.support.test:rules:0.5'
+  androidTestCompile 'com.android.support:support-annotations:27.1.1'
+  androidTestCompile 'com.android.support.test:runner:1.0.2'
+  androidTestCompile 'com.android.support.test:rules:1.0.2'
   androidTestCompile 'org.hamcrest:hamcrest-library:1.3'
 }
 
