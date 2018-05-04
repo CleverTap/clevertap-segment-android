@@ -15,6 +15,7 @@ import com.segment.analytics.Traits;
 import com.segment.analytics.integrations.AliasPayload;
 import com.segment.analytics.integrations.IdentifyPayload;
 import com.segment.analytics.integrations.Integration;
+import com.segment.analytics.integrations.ScreenPayload;
 import com.segment.analytics.integrations.TrackPayload;
 import com.segment.analytics.internal.Utils;
 import com.segment.analytics.Properties.Product;
@@ -295,5 +296,15 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
             mLogger.error(t, "CleverTap: Error handling Order Completed");
             cl.event.pushError("Error handling Order Completed: "+ t.getMessage(), 512);
         }
+    }
+
+    @Override
+    public void screen(ScreenPayload screen) {
+        super.screen(screen);
+
+        if(screen.name() == null)
+            return;
+
+        cl.recordScreen(screen.name());
     }
 }
