@@ -1,5 +1,5 @@
 
-Version 1.0.15 (04 May, 2018)
+Version 1.0.15 (10 May, 2018)
 ===================================
 *(Supports analytics-android 4.3.1 and CleverTap 3.1.9)*
 
