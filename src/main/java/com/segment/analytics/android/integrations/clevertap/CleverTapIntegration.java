@@ -63,26 +63,21 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
         public Integration<?> create(ValueMap settings, Analytics analytics) {
             final CleverTapAPI cl;
             Logger logger = analytics.logger(CLEVERTAP_KEY);
-            try {
-                String accountID = settings.getString(ACCOUNT_ID_KEY);
-                String accountToken = settings.getString(ACCOUNT_TOKEN_KEY);
-                String region = settings.getString(ACCOUNT_REGION_KEY);
-                if (region != null) {
-                    region = region.replace(".", "");
-                }
+            String accountID = settings.getString(ACCOUNT_ID_KEY);
+            String accountToken = settings.getString(ACCOUNT_TOKEN_KEY);
+            String region = settings.getString(ACCOUNT_REGION_KEY);
+            if (region != null) {
+                region = region.replace(".", "");
+            }
 
-                if (Utils.isNullOrEmpty(accountID) || Utils.isNullOrEmpty(accountToken)) {
-                    logger.info("CleverTap+Segment integration attempt to initialize without account id or account token.");
-                    return null;
-                }
-
-                CleverTapAPI.changeCredentials(accountID, accountToken, region);
-                cl = CleverTapAPI.getInstance(analytics.getApplication());
-                logger.info("Configured CleverTap+Segment integration and initialized CleverTap.");
-            } catch (CleverTapMetaDataNotFoundException | CleverTapPermissionsNotSatisfied e) {
-                logger.error(e, "Cannot initialize the CleverTap SDK");
+            if (Utils.isNullOrEmpty(accountID) || Utils.isNullOrEmpty(accountToken)) {
+                logger.info("CleverTap+Segment integration attempt to initialize without account id or account token.");
                 return null;
             }
+
+            CleverTapAPI.changeCredentials(accountID, accountToken, region);
+            cl = CleverTapAPI.getDefaultInstance(analytics.getApplication());
+            logger.info("Configured CleverTap+Segment integration and initialized CleverTap.");
 
             return new CleverTapIntegration(cl, logger);
         }
@@ -130,7 +125,7 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
         if (cl == null) return;
 
         try {
-            cl.activityResumed(activity);
+            CleverTapAPI.onActivityResumed(activity);
         } catch (Throwable t) {
             // Ignore
         }
@@ -143,7 +138,7 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
         if (cl == null) return;
 
         try {
-            cl.activityPaused(activity);
+            CleverTapAPI.onActivityPaused();
         } catch (Throwable t) {
             // Ignore
         }
