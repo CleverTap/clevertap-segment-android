@@ -104,7 +104,7 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
 
         CleverTapAPI.setAppForeground(true);
         try {
-            cl.event.pushNotificationClickedEvent(activity.getIntent().getExtras());
+            cl.pushNotificationClickedEvent(activity.getIntent().getExtras());
         } catch (Throwable t) {
             // Ignore
         }
@@ -173,10 +173,10 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
                     profile.put("Gender", "F");
                 }
             }
-            cl.profile.push(profile);
+            cl.pushProfile(profile);
         } catch (Throwable t) {
             mLogger.error(t, "CleverTap: Error pushing profile");
-            cl.event.pushError(t.getMessage(), 512);
+            cl.pushError(t.getMessage(), 512);
         }
     }
 
@@ -201,10 +201,10 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
         Properties properties = track.properties();
 
         try {
-            cl.event.push(event, properties);
+            cl.pushEvent(event, properties);
         } catch (Throwable t) {
             mLogger.error(t, "CleverTap: Error pushing event");
-            cl.event.pushError(t.getMessage(), 512);
+            cl.pushError(t.getMessage(), 512);
         }
     }
 
@@ -219,10 +219,10 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
         try {
             HashMap<String, Object> profile = new HashMap<>();
             profile.put("Identity", alias.userId());
-            cl.profile.push(profile);
+            cl.pushProfile(profile);
         } catch (Throwable t) {
             mLogger.error(t, "CleverTap: Error pushing profile");
-            cl.event.pushError(t.getMessage(), 512);
+            cl.pushError(t.getMessage(), 512);
         }
     }
 
@@ -280,16 +280,16 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
                     items.add(item);
                 } catch (Throwable t) {
                     mLogger.error(t, "CleverTap: Error handling Order Completed product");
-                    cl.event.pushError("Error handling Order Completed product: " + t.getMessage(), 512);
+                    cl.pushError("Error handling Order Completed product: " + t.getMessage(), 512);
                 }
             }
         }
 
         try {
-            cl.event.push(CleverTapAPI.CHARGED_EVENT, details, items);
+            cl.pushChargedEvent(details, items);
         } catch (Throwable t) {
             mLogger.error(t, "CleverTap: Error handling Order Completed");
-            cl.event.pushError("Error handling Order Completed: "+ t.getMessage(), 512);
+            cl.pushError("Error handling Order Completed: "+ t.getMessage(), 512);
         }
     }
 

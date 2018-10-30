@@ -101,7 +101,6 @@ public class CleverTapTest {
     public void activityResume() {
         Activity activity = mock(Activity.class);
         integration.onActivityResumed(activity);
-        verify(clevertap).activityResumed(activity);
         verifyNoMoreCleverTapInteractions();
     }
 
@@ -109,7 +108,6 @@ public class CleverTapTest {
     public void activityPause() {
         Activity activity = mock(Activity.class);
         integration.onActivityPaused(activity);
-        verify(clevertap).activityPaused(activity);
         verifyNoMoreCleverTapInteractions();
     }
 
