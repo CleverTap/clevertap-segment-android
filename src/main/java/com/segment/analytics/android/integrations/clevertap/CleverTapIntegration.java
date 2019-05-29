@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import com.clevertap.android.sdk.CleverTapAPI;
-import com.clevertap.android.sdk.exceptions.CleverTapMetaDataNotFoundException;
-import com.clevertap.android.sdk.exceptions.CleverTapPermissionsNotSatisfied;
 import com.segment.analytics.Analytics;
 import com.segment.analytics.integrations.Logger;
 import com.segment.analytics.Properties;
@@ -42,9 +40,9 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
     private static final String ACCOUNT_TOKEN_KEY = "clevertap_account_token";
     private static final String ACCOUNT_REGION_KEY = "region";
 
-    private static final Set<String> MALE_TOKENS = new HashSet<String>(Arrays.asList("M",
+    private static final Set<String> MALE_TOKENS = new HashSet<>(Arrays.asList("M",
             "MALE"));
-    private static final Set<String> FEMALE_TOKENS = new HashSet<String>(Arrays.asList("F",
+    private static final Set<String> FEMALE_TOKENS = new HashSet<>(Arrays.asList("F",
             "FEMALE"));
 
     private static final Map<String, String> MAP_KNOWN_PROFILE_FIELDS;
