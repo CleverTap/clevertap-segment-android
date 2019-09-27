@@ -71,7 +71,7 @@ public class CleverTapTest {
         when(analytics.getApplication()).thenReturn(context);
 
         try {
-            when(CleverTapAPI.getInstance(context)).thenReturn(clevertap);
+            when(CleverTapAPI.getDefaultInstance(context)).thenReturn(clevertap);
         } catch (Exception e) {
           // ignore
         }

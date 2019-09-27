@@ -92,6 +92,7 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
     public CleverTapIntegration(CleverTapAPI instance, Logger logger) {
         this.cl = instance;
         this.mLogger = logger;
+        this.cl.setLibrary("Segment-Android");
     }
 
     @Override
