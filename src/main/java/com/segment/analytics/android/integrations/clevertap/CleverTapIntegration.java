@@ -172,7 +172,7 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
                     profile.put("Gender", "F");
                 }
             }
-            cl.pushProfile(profile);
+            cl.onUserLogin(profile);
         } catch (Throwable t) {
             mLogger.error(t, "CleverTap: Error pushing profile");
             cl.pushError(t.getMessage(), 512);
@@ -218,7 +218,7 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
         try {
             HashMap<String, Object> profile = new HashMap<>();
             profile.put("Identity", alias.userId());
-            cl.pushProfile(profile);
+            cl.onUserLogin(profile);
         } catch (Throwable t) {
             mLogger.error(t, "CleverTap: Error pushing profile");
             cl.pushError(t.getMessage(), 512);
