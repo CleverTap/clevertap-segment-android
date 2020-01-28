@@ -11,7 +11,7 @@ CleverTap integration for [analytics-android](https://github.com/segmentio/analy
 To install the Segment-CleverTap integration, simply add this line to your gradle file:
 
 ```
-compile 'com.clevertap.android:clevertap-segment-android:+'
+implementation 'com.clevertap.android:clevertap-segment-android:+'
 
 ```
 
