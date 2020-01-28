@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+
 import com.clevertap.android.sdk.CleverTapAPI;
 import com.segment.analytics.Analytics;
 import com.segment.analytics.integrations.Logger;
@@ -218,7 +219,7 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
         try {
             HashMap<String, Object> profile = new HashMap<>();
             profile.put("Identity", alias.userId());
-            cl.onUserLogin(profile);
+            cl.pushProfile(profile);
         } catch (Throwable t) {
             mLogger.error(t, "CleverTap: Error pushing profile");
             cl.pushError(t.getMessage(), 512);
@@ -288,7 +289,7 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
             cl.pushChargedEvent(details, items);
         } catch (Throwable t) {
             mLogger.error(t, "CleverTap: Error handling Order Completed");
-            cl.pushError("Error handling Order Completed: "+ t.getMessage(), 512);
+            cl.pushError("Error handling Order Completed: " + t.getMessage(), 512);
         }
     }
 
@@ -296,7 +297,7 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
     public void screen(ScreenPayload screen) {
         super.screen(screen);
 
-        if(screen.name() == null)
+        if (screen.name() == null)
             return;
 
         cl.recordScreen(screen.name());
