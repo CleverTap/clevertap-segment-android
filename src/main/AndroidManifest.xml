@@ -2,18 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.segment.analytics.android.integrations.clevertap"
 
-    android:versionCode="10103"
-    android:versionName="1.1.3">
+    android:versionCode="10105"
+    android:versionName="1.1.5">
 
     <application>
-        <receiver
-            android:name="com.clevertap.android.sdk.InstallReferrerBroadcastReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.android.vending.INSTALL_REFERRER" />
-            </intent-filter>
-        </receiver>
-
         <receiver
             android:name="com.clevertap.android.sdk.CTPushNotificationReceiver"
             android:exported="false"
