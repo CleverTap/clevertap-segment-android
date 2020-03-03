@@ -2,7 +2,7 @@ Version 1.1.5 (02 March, 2020)
 ===================================
 *(Supports analytics-android 4.3.1 and CleverTap 3.6.4)*
 
- * Added fix related to install referrer
+ * Added fix related to install referrer - java.lang.ClassNotFoundException for com.clevertap.android.sdk.InstallReferrerBroadcastReceiver
 
 Version 1.1.4 (26 February, 2020)
 ===================================
