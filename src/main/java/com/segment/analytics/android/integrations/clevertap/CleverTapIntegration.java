@@ -148,6 +148,12 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
     public void identify(IdentifyPayload identify) {
         super.identify(identify);
 
+        if(cl == null)
+        {
+            mLogger.debug("CleverTap Instance is null.");
+            return;
+        }
+
         if (identify == null) {
             return;
         }
@@ -184,6 +190,12 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
     public void track(TrackPayload track) {
         super.track(track);
 
+        if(cl == null)
+        {
+            mLogger.debug("CleverTap Instance is null.");
+            return;
+        }
+
         if (track == null) {
             return;
         }
@@ -212,6 +224,12 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
     public void alias(AliasPayload alias) {
         super.alias(alias);
 
+        if(cl == null)
+        {
+            mLogger.debug("CleverTap Instance is null.");
+            return;
+        }
+
         if (alias == null || Utils.isNullOrEmpty(alias.userId())) {
             return;
         }
@@ -232,6 +250,13 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
     }
 
     private void handleOrderCompleted(TrackPayload track) {
+
+        if(cl == null)
+        {
+            mLogger.debug("CleverTap Instance is null.");
+            return;
+        }
+
         if (!track.event().equals("Order Completed")) return;
 
         Properties properties = track.properties();
@@ -297,9 +322,21 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
     public void screen(ScreenPayload screen) {
         super.screen(screen);
 
+        if(cl == null)
+        {
+            mLogger.debug("CleverTap Instance is null.");
+            return;
+        }
+
         if (screen.name() == null)
             return;
 
         cl.recordScreen(screen.name());
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+
     }
 }
