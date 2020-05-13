@@ -334,9 +334,4 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
         cl.recordScreen(screen.name());
     }
 
-    @Override
-    public void reset() {
-        super.reset();
-
-    }
 }
