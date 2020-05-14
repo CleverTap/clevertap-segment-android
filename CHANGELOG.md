@@ -1,3 +1,9 @@
+Version 1.1.7 (14 May, 2020)
+===================================
+*(Supports analytics-android 4.5.0 and CleverTap 3.8.0)*
+
+ * Added null check for CT instance
+
 Version 1.1.6 (14 April, 2020)
 ===================================
 *(Supports analytics-android 4.3.1 and CleverTap 3.7.2)*
