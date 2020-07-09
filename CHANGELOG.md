@@ -1,8 +1,8 @@
 Version 1.1.8 (9 July, 2020)
 ===================================
-*Supports CleverTap 3.8.1 *
+* Supports CleverTap Android v3.8.1 *
 
-* Added null check for CT instance
+* Bug fixes
 
 Version 1.1.7 (14 May, 2020)
 ===================================
