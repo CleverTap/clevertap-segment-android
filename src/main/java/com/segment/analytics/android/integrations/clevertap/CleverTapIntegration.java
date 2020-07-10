@@ -329,7 +329,7 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
             return;
         }
 
-        if (screen.name() == null)
+        if (screen == null || screen.name() == null)
             return;
 
         cl.recordScreen(screen.name());
