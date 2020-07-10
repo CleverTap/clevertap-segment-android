@@ -1,8 +1,14 @@
+Version 1.1.8 (10 July, 2020)
+===================================
+* Supports CleverTap Android v3.8.1 *
+
+* Bug fixes
+
 Version 1.1.7 (14 May, 2020)
 ===================================
 *(Supports analytics-android 4.5.0 and CleverTap 3.8.0)*
 
- * Added null check for CT instance
+* Added null check for CT instance
 
 Version 1.1.6 (14 April, 2020)
 ===================================
@@ -12,7 +18,7 @@ Version 1.1.5 (02 March, 2020)
 ===================================
 *(Supports analytics-android 4.3.1 and CleverTap 3.6.4)*
 
- * Added fix related to install referrer - java.lang.ClassNotFoundException for com.clevertap.android.sdk.InstallReferrerBroadcastReceiver
+* Added fix related to install referrer - java.lang.ClassNotFoundException for com.clevertap.android.sdk.InstallReferrerBroadcastReceiver
 
 Version 1.1.4 (26 February, 2020)
 ===================================

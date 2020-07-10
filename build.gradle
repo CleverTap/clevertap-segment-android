@@ -1,47 +1,46 @@
-
 buildscript {
-  repositories {
-    maven {
-      url "https://maven.google.com"
+    repositories {
+        maven {
+            url "https://maven.google.com"
+        }
+        mavenCentral()
+        jcenter()
+        flatDir {
+            dirs 'libs'
+        }
     }
-    mavenCentral()
-    jcenter()
-    flatDir{
-      dirs 'libs'
-    }
-  }
 
-  dependencies {
-    classpath 'com.android.tools.build:gradle:3.5.0'
-    classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.1'
-    classpath 'com.google.gms:google-services:4.2.0'
-  }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.1'
+        classpath 'com.google.gms:google-services:4.2.0'
+    }
 }
 
 ext {
-  bintrayRepo = 'Maven'
-  bintrayName = 'clevertap-segment-integration'
-  org = 'clevertap'
+    bintrayRepo = 'Maven'
+    bintrayName = 'clevertap-segment-integration'
+    org = 'clevertap'
 
-  publishedGroupId = 'com.clevertap.android'
-  libraryName = 'clevertap-segment-integration'
-  artifact = 'clevertap-segment-android'
+    publishedGroupId = 'com.clevertap.android'
+    libraryName = 'clevertap-segment-integration'
+    artifact = 'clevertap-segment-android'
 
-  libraryDescription = 'CleverTap Integration for Segment Android Analytics'
+    libraryDescription = 'CleverTap Integration for Segment Android Analytics'
 
-  siteUrl = 'https://github.com/CleverTap/clevertap-segment-android'
-  gitUrl = 'https://github.com/CleverTap/clevertap-segment-android.git'
+    siteUrl = 'https://github.com/CleverTap/clevertap-segment-android'
+    gitUrl = 'https://github.com/CleverTap/clevertap-segment-android.git'
 
-  libraryVersion = '1.1.7'
+    libraryVersion = '1.1.8'
 
-  developerId = 'clevertap'
-  developerName = 'CleverTap'
-  developerEmail = 'support@clevertap.com'
+    developerId = 'clevertap'
+    developerName = 'CleverTap'
+    developerEmail = 'support@clevertap.com'
 
-  licenseName = 'The MIT License (MIT)'
-  licenseUrl = 'http://opensource.org/licenses/MIT'
-  allLicenses = ["MIT"]
+    licenseName = 'The MIT License (MIT)'
+    licenseUrl = 'http://opensource.org/licenses/MIT'
+    allLicenses = ["MIT"]
 }
 
 version = libraryVersion
@@ -53,141 +52,144 @@ apply plugin: 'com.jfrog.bintray'
 
 
 android {
-  compileSdkVersion 28
-  buildToolsVersion '28.0.3'
-
-  defaultConfig {
-    minSdkVersion 14
-    targetSdkVersion 28
     compileSdkVersion 28
-  }
+    buildToolsVersion '28.0.3'
 
-  compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_7
-    targetCompatibility JavaVersion.VERSION_1_7
-  }
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 28
+        compileSdkVersion 28
+    }
 
-  testOptions {
-    unitTests.returnDefaultValues = true
-  }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 // Bintray
 Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
+if (project.rootProject.file('local.properties').exists()) {
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+}
 
 bintray {
-  user = properties.getProperty("bintray.user")
-  key = properties.getProperty("bintray.apikey")
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
 
-  configurations = ['archives']
-  pkg {
-    repo = bintrayRepo
-    name = bintrayName
-    userOrg = org
-    desc = libraryDescription
-    websiteUrl = siteUrl
-    vcsUrl = gitUrl
-    licenses = allLicenses
-    publish = true
-    publicDownloadNumbers = true
-    version {
-      desc = libraryDescription
-      gpg {
-        sign = false
-      }
+    configurations = ['archives']
+    pkg {
+        repo = bintrayRepo
+        name = bintrayName
+        userOrg = org
+        desc = libraryDescription
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = allLicenses
+        publish = true
+        publicDownloadNumbers = true
+        version {
+            desc = libraryDescription
+            gpg {
+                sign = false
+            }
+        }
     }
-  }
 }
 
 install {
-  repositories.mavenInstaller {
-    // This generates POM.xml with proper parameters
-    pom {
-      project {
-        packaging 'aar'
-        groupId publishedGroupId
-        artifactId artifact
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+                groupId publishedGroupId
+                artifactId artifact
 
-        // Add your description here
-        name libraryName
-        description libraryDescription
-        url siteUrl
+                // Add your description here
+                name libraryName
+                description libraryDescription
+                url siteUrl
 
-        // Set your license
-        licenses {
-          license {
-            name licenseName
-            url licenseUrl
-          }
-        }
-        developers {
-          developer {
-            id developerId
-            name developerName
-            email developerEmail
-          }
-        }
-        scm {
-          connection gitUrl
-          developerConnection gitUrl
-          url siteUrl
+                // Set your license
+                licenses {
+                    license {
+                        name licenseName
+                        url licenseUrl
+                    }
+                }
+                developers {
+                    developer {
+                        id developerId
+                        name developerName
+                        email developerEmail
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
 
+                }
+            }
         }
-      }
     }
-  }
 }
 
 dependencies {
-  repositories {
-    mavenCentral()
-    jcenter()
-    maven {
-      url "https://maven.google.com"
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven {
+            url "https://maven.google.com"
+        }
+
+    }
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    compileOnly 'com.segment.analytics.android:analytics:4.5.0'
+    compileOnly 'com.android.support:support-v4:28.0.0'
+
+    implementation 'com.clevertap.android:clevertap-android-sdk:3.8.1'
+    implementation 'com.android.installreferrer:installreferrer:1.0'
+    // Mandatory if using segment sdk version 1.1.4 or higher
+
+    compileOnly 'com.google.android.gms:play-services-base:16.1.0'
+    compileOnly 'com.google.firebase:firebase-messaging:17.3.4'
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation('org.robolectric:robolectric:3.0') {
+        exclude group: 'commons-logging', module: 'commons-logging'
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
 
-  }
-  implementation fileTree(dir: 'libs', include: ['*.jar'])
-  compileOnly 'com.segment.analytics.android:analytics:4.5.0'
-  compileOnly 'com.android.support:support-v4:28.0.0'
+    testImplementation 'com.segment.analytics.android:analytics-tests:4.5.0'
 
-  implementation 'com.clevertap.android:clevertap-android-sdk:3.8.0'
-  implementation 'com.android.installreferrer:installreferrer:1.0' // Mandatory if using segment sdk version 1.1.4 or higher
+    testImplementation 'org.assertj:assertj-core:2.6.0'
 
-  compileOnly 'com.google.android.gms:play-services-base:16.1.0'
-  compileOnly 'com.google.firebase:firebase-messaging:17.3.4'
+    testImplementation 'org.powermock:powermock:1.6.2'
+    testImplementation 'org.powermock:powermock-classloading-xstream:1.6.2'
+    testImplementation 'org.powermock:powermock-module-junit4-rule:1.6.2'
+    testImplementation 'org.powermock:powermock-module-junit4:1.6.2'
+    testImplementation 'org.powermock:powermock-api-mockito2:2.0.7'
+    testImplementation 'org.hamcrest:hamcrest-library:1.3'
 
-  testImplementation 'junit:junit:4.12'
-  testImplementation('org.robolectric:robolectric:3.0') {
-    exclude group: 'commons-logging', module: 'commons-logging'
-    exclude group: 'org.apache.httpcomponents', module: 'httpclient'
-  }
+    testImplementation "org.json:json:20140107"
+    androidTestImplementation 'com.android.support:support-annotations:28.0.0'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation 'org.hamcrest:hamcrest-library:1.3'
 
-  testImplementation 'com.segment.analytics.android:analytics-tests:4.0.0'
-
-  testImplementation 'org.assertj:assertj-core:2.6.0'
-
-  testImplementation 'org.mockito:mockito-core:2.11.0'
-
-  testImplementation 'org.powermock:powermock:1.6.2'
-  testImplementation 'org.powermock:powermock-module-junit4:1.6.2'
-  testImplementation 'org.powermock:powermock-module-junit4-rule:1.6.2'
-  testImplementation 'org.powermock:powermock-api-mockito:1.6.2'
-  testImplementation 'org.powermock:powermock-classloading-xstream:1.6.2'
-
-  androidTestImplementation 'com.segment.analytics.android:analytics-tests:4.0.0'
-  androidTestImplementation 'com.android.support:support-annotations:28.0.0'
-  androidTestImplementation 'com.android.support.test:runner:1.0.2'
-  androidTestImplementation 'com.android.support.test:rules:1.0.2'
-  androidTestImplementation 'org.hamcrest:hamcrest-library:1.3'
 }
 
 task sourcesJar(type: Jar) {
-  from android.sourceSets.main.java.srcDirs
-  classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
 }
 
 artifacts {
-  archives sourcesJar
+    archives sourcesJar
 }

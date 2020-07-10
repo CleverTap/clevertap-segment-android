@@ -7,21 +7,19 @@ import android.os.Bundle;
 
 import com.clevertap.android.sdk.CleverTapAPI;
 import com.segment.analytics.Analytics;
-import com.segment.analytics.integrations.Logger;
 import com.segment.analytics.Properties;
-import com.segment.analytics.ValueMap;
+import com.segment.analytics.Properties.Product;
 import com.segment.analytics.Traits;
+import com.segment.analytics.ValueMap;
 import com.segment.analytics.integrations.AliasPayload;
 import com.segment.analytics.integrations.IdentifyPayload;
 import com.segment.analytics.integrations.Integration;
+import com.segment.analytics.integrations.Logger;
 import com.segment.analytics.integrations.ScreenPayload;
 import com.segment.analytics.integrations.TrackPayload;
 import com.segment.analytics.internal.Utils;
-import com.segment.analytics.Properties.Product;
 
 import org.json.JSONObject;
-
-import static com.segment.analytics.internal.Utils.isNullOrEmpty;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +31,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static com.segment.analytics.internal.Utils.isNullOrEmpty;
 
 public class CleverTapIntegration extends Integration<CleverTapAPI> {
     private final CleverTapAPI cl;
@@ -93,7 +93,8 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
     public CleverTapIntegration(CleverTapAPI instance, Logger logger) {
         this.cl = instance;
         this.mLogger = logger;
-        this.cl.setLibrary("Segment-Android");
+        if (this.cl != null)
+            this.cl.setLibrary("Segment-Android");
     }
 
     @Override
@@ -328,7 +329,7 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
             return;
         }
 
-        if (screen.name() == null)
+        if (screen == null || screen.name() == null)
             return;
 
         cl.recordScreen(screen.name());
