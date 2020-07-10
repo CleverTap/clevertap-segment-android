@@ -1,4 +1,4 @@
-Version 1.1.8 (9 July, 2020)
+Version 1.1.8 (10 July, 2020)
 ===================================
 * Supports CleverTap Android v3.8.1 *
 
