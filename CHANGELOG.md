@@ -1,7 +1,11 @@
+Version 1.1.9 (4 August, 2020)
+===================================
+*(Supports analytics-android 4.5.0 and CleverTap 3.8.2)*
+* Bug fixes
+
 Version 1.1.8 (10 July, 2020)
 ===================================
-* Supports CleverTap Android v3.8.1 *
-
+*(Supports analytics-android 4.5.0 and CleverTap 3.8.1)*
 * Bug fixes
 
 Version 1.1.7 (14 May, 2020)

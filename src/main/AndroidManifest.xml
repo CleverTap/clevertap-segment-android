@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.segment.analytics.android.integrations.clevertap"
 
-    android:versionCode="10108"
-    android:versionName="1.1.8">
+    android:versionCode="10109"
+    android:versionName="1.1.9">
 
     <application>
         <receiver
