@@ -2,15 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.segment.analytics.android.integrations.clevertap"
 
-    android:versionCode="10110"
-    android:versionName="1.1.10">
+    android:versionCode="10200"
+    android:versionName="1.2.0">
 
-    <application>
-        <receiver
-            android:name="com.clevertap.android.sdk.CTPushNotificationReceiver"
-            android:exported="false"
-            android:enabled="true">
-        </receiver>
-    </application>
+    <application></application>
 
 </manifest>
