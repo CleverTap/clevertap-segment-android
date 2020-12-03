@@ -1,10 +1,11 @@
 package com.segment.analytics.android.integrations.clevertap;
 
+import static com.segment.analytics.internal.Utils.isNullOrEmpty;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
 import com.clevertap.android.sdk.CleverTapAPI;
 import com.segment.analytics.Analytics;
 import com.segment.analytics.Properties;
@@ -18,9 +19,6 @@ import com.segment.analytics.integrations.Logger;
 import com.segment.analytics.integrations.ScreenPayload;
 import com.segment.analytics.integrations.TrackPayload;
 import com.segment.analytics.internal.Utils;
-
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,31 +29,26 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static com.segment.analytics.internal.Utils.isNullOrEmpty;
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 
 public class CleverTapIntegration extends Integration<CleverTapAPI> {
-    private final CleverTapAPI cl;
+
     private static final String CLEVERTAP_KEY = "CleverTap";
+
     private static final String ACCOUNT_ID_KEY = "clevertap_account_id";
+
     private static final String ACCOUNT_TOKEN_KEY = "clevertap_account_token";
+
     private static final String ACCOUNT_REGION_KEY = "region";
 
     private static final Set<String> MALE_TOKENS = new HashSet<>(Arrays.asList("M",
             "MALE"));
+
     private static final Set<String> FEMALE_TOKENS = new HashSet<>(Arrays.asList("F",
             "FEMALE"));
 
     private static final Map<String, String> MAP_KNOWN_PROFILE_FIELDS;
-
-    static {
-        Map<String, String> knownFieldsMap = new LinkedHashMap<>();
-        knownFieldsMap.put("phone", "Phone");
-        knownFieldsMap.put("name", "Name");
-        knownFieldsMap.put("email", "Email");
-        knownFieldsMap.put("birthday", "DOB");
-        MAP_KNOWN_PROFILE_FIELDS = Collections.unmodifiableMap(knownFieldsMap);
-    }
 
     public static final Factory FACTORY = new Factory() {
         @Override
@@ -70,7 +63,8 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
             }
 
             if (Utils.isNullOrEmpty(accountID) || Utils.isNullOrEmpty(accountToken)) {
-                logger.info("CleverTap+Segment integration attempt to initialize without account id or account token.");
+                logger.info(
+                        "CleverTap+Segment integration attempt to initialize without account id or account token.");
                 return null;
             }
 
@@ -81,6 +75,7 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
             return new CleverTapIntegration(cl, logger);
         }
 
+        @NotNull
         @Override
         public String key() {
             return CLEVERTAP_KEY;
@@ -88,20 +83,25 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
 
     };
 
+    private final CleverTapAPI cl;
+
     private final Logger mLogger;
 
     public CleverTapIntegration(CleverTapAPI instance, Logger logger) {
         this.cl = instance;
         this.mLogger = logger;
-        if (this.cl != null)
+        if (this.cl != null) {
             this.cl.setLibrary("Segment-Android");
+        }
     }
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
         super.onActivityCreated(activity, savedInstanceState);
 
-        if (cl == null) return;
+        if (cl == null) {
+            return;
+        }
 
         CleverTapAPI.setAppForeground(true);
         try {
@@ -120,37 +120,38 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
     }
 
     @Override
-    public void onActivityResumed(Activity activity) {
-        super.onActivityResumed(activity);
+    public void alias(AliasPayload alias) {
+        super.alias(alias);
 
-        if (cl == null) return;
+        if (cl == null) {
+            mLogger.debug("CleverTap Instance is null.");
+            return;
+        }
+
+        if (alias == null || Utils.isNullOrEmpty(alias.userId())) {
+            return;
+        }
 
         try {
-            CleverTapAPI.onActivityResumed(activity);
+            HashMap<String, Object> profile = new HashMap<>();
+            profile.put("Identity", alias.userId());
+            cl.pushProfile(profile);
         } catch (Throwable t) {
-            // Ignore
+            mLogger.error(t, "CleverTap: Error pushing profile");
+            cl.pushError(t.getMessage(), 512);
         }
     }
 
     @Override
-    public void onActivityPaused(Activity activity) {
-        super.onActivityPaused(activity);
-
-        if (cl == null) return;
-
-        try {
-            CleverTapAPI.onActivityPaused();
-        } catch (Throwable t) {
-            // Ignore
-        }
+    public CleverTapAPI getUnderlyingInstance() {
+        return cl;
     }
 
     @Override
     public void identify(IdentifyPayload identify) {
         super.identify(identify);
 
-        if(cl == null)
-        {
+        if (cl == null) {
             mLogger.debug("CleverTap Instance is null.");
             return;
         }
@@ -188,11 +189,56 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
     }
 
     @Override
+    public void onActivityPaused(Activity activity) {
+        super.onActivityPaused(activity);
+
+        if (cl == null) {
+            return;
+        }
+
+        try {
+            CleverTapAPI.onActivityPaused();
+        } catch (Throwable t) {
+            // Ignore
+        }
+    }
+
+    @Override
+    public void onActivityResumed(Activity activity) {
+        super.onActivityResumed(activity);
+
+        if (cl == null) {
+            return;
+        }
+
+        try {
+            CleverTapAPI.onActivityResumed(activity);
+        } catch (Throwable t) {
+            // Ignore
+        }
+    }
+
+    @Override
+    public void screen(ScreenPayload screen) {
+        super.screen(screen);
+
+        if (cl == null) {
+            mLogger.debug("CleverTap Instance is null.");
+            return;
+        }
+
+        if (screen == null || screen.name() == null) {
+            return;
+        }
+
+        cl.recordScreen(screen.name());
+    }
+
+    @Override
     public void track(TrackPayload track) {
         super.track(track);
 
-        if(cl == null)
-        {
+        if (cl == null) {
             mLogger.debug("CleverTap Instance is null.");
             return;
         }
@@ -221,44 +267,16 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
         }
     }
 
-    @Override
-    public void alias(AliasPayload alias) {
-        super.alias(alias);
-
-        if(cl == null)
-        {
-            mLogger.debug("CleverTap Instance is null.");
-            return;
-        }
-
-        if (alias == null || Utils.isNullOrEmpty(alias.userId())) {
-            return;
-        }
-
-        try {
-            HashMap<String, Object> profile = new HashMap<>();
-            profile.put("Identity", alias.userId());
-            cl.pushProfile(profile);
-        } catch (Throwable t) {
-            mLogger.error(t, "CleverTap: Error pushing profile");
-            cl.pushError(t.getMessage(), 512);
-        }
-    }
-
-    @Override
-    public CleverTapAPI getUnderlyingInstance() {
-        return cl;
-    }
-
     private void handleOrderCompleted(TrackPayload track) {
 
-        if(cl == null)
-        {
+        if (cl == null) {
             mLogger.debug("CleverTap Instance is null.");
             return;
         }
 
-        if (!track.event().equals("Order Completed")) return;
+        if (!track.event().equals("Order Completed")) {
+            return;
+        }
 
         Properties properties = track.properties();
 
@@ -277,7 +295,9 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
         while (keys.hasNext()) {
             try {
                 String key = (String) keys.next();
-                if (key.equals("products")) continue;
+                if (key.equals("products")) {
+                    continue;
+                }
                 details.put(key, propertiesJson.get(key));
 
             } catch (Throwable t) {
@@ -319,20 +339,13 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
         }
     }
 
-    @Override
-    public void screen(ScreenPayload screen) {
-        super.screen(screen);
-
-        if(cl == null)
-        {
-            mLogger.debug("CleverTap Instance is null.");
-            return;
-        }
-
-        if (screen == null || screen.name() == null)
-            return;
-
-        cl.recordScreen(screen.name());
+    static {
+        Map<String, String> knownFieldsMap = new LinkedHashMap<>();
+        knownFieldsMap.put("phone", "Phone");
+        knownFieldsMap.put("name", "Name");
+        knownFieldsMap.put("email", "Email");
+        knownFieldsMap.put("birthday", "DOB");
+        MAP_KNOWN_PROFILE_FIELDS = Collections.unmodifiableMap(knownFieldsMap);
     }
 
 }

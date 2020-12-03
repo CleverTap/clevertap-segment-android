@@ -149,10 +149,10 @@ dependencies {
 
     }
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    compileOnly 'com.segment.analytics.android:analytics:4.5.0'
+    compileOnly 'com.segment.analytics.android:analytics:4.9.0'
     compileOnly 'androidx.annotation:annotation:1.1.0'
 
-    implementation 'com.clevertap.android:clevertap-android-sdk:4.0.0'
+    implementation 'com.clevertap.android:clevertap-android-sdk:4.0.1'
 
     testImplementation 'junit:junit:4.12'
     testImplementation('org.robolectric:robolectric:3.0') {
