@@ -237,8 +237,8 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
         try {
             cl.recordScreen(screen.name());
         } catch (NullPointerException npe) {
-            mLogger.debug("ScreenPayLoad obj is returning null."+npe);
-        }//Added this as screen.getTitle() was returning null in sdk v4.1.1
+            mLogger.debug("ScreenPayLoad obj is null."+npe);
+        }
 
     }
 
