@@ -1,11 +1,10 @@
 package com.segment.analytics.android.integrations.clevertap;
 
-import static com.segment.analytics.internal.Utils.isNullOrEmpty;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+
 import com.clevertap.android.sdk.CleverTapAPI;
 import com.segment.analytics.Analytics;
 import com.segment.analytics.Properties;
@@ -19,6 +18,10 @@ import com.segment.analytics.integrations.Logger;
 import com.segment.analytics.integrations.ScreenPayload;
 import com.segment.analytics.integrations.TrackPayload;
 import com.segment.analytics.internal.Utils;
+
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,8 +32,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
+
+import static com.segment.analytics.internal.Utils.isNullOrEmpty;
 
 public class CleverTapIntegration extends Integration<CleverTapAPI> {
 
@@ -231,7 +234,11 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
             return;
         }
 
-        cl.recordScreen(screen.name());
+        try {
+            cl.recordScreen(screen.name());
+        } catch (NullPointerException npe) {
+            mLogger.debug("ScreenPayLoad obj is returning null."+npe);
+        }//Added this as screen.getTitle() was returning null in sdk v4.1.1
     }
 
     @Override
