@@ -4,7 +4,6 @@ buildscript {
             url "https://maven.google.com"
         }
         mavenCentral()
-        jcenter()
         flatDir {
             dirs 'libs'
         }
@@ -13,7 +12,6 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.1'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
         classpath 'com.google.gms:google-services:4.3.3'
     }
 }
@@ -48,7 +46,6 @@ group = publishedGroupId
 
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
 
 
 android {
@@ -71,34 +68,34 @@ android {
 }
 
 // Bintray
-Properties properties = new Properties()
-if (project.rootProject.file('local.properties').exists()) {
-    properties.load(project.rootProject.file('local.properties').newDataInputStream())
-}
+//Properties properties = new Properties()
+//if (project.rootProject.file('local.properties').exists()) {
+//    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+//}
 
-bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
-
-    configurations = ['archives']
-    pkg {
-        repo = bintrayRepo
-        name = bintrayName
-        userOrg = org
-        desc = libraryDescription
-        websiteUrl = siteUrl
-        vcsUrl = gitUrl
-        licenses = allLicenses
-        publish = true
-        publicDownloadNumbers = true
-        version {
-            desc = libraryDescription
-            gpg {
-                sign = false
-            }
-        }
-    }
-}
+//bintray {
+//    user = properties.getProperty("bintray.user")
+//    key = properties.getProperty("bintray.apikey")
+//
+//    configurations = ['archives']
+//    pkg {
+//        repo = bintrayRepo
+//        name = bintrayName
+//        userOrg = org
+//        desc = libraryDescription
+//        websiteUrl = siteUrl
+//        vcsUrl = gitUrl
+//        licenses = allLicenses
+//        publish = true
+//        publicDownloadNumbers = true
+//        version {
+//            desc = libraryDescription
+//            gpg {
+//                sign = false
+//            }
+//        }
+//    }
+//}
 
 install {
     repositories.mavenInstaller {
@@ -142,7 +139,6 @@ install {
 dependencies {
     repositories {
         mavenCentral()
-        jcenter()
         maven {
             url "https://maven.google.com"
         }
