@@ -32,7 +32,7 @@ ext {
     siteUrl = 'https://github.com/CleverTap/clevertap-segment-android'
     gitUrl = 'https://github.com/CleverTap/clevertap-segment-android.git'
 
-    libraryVersion = '1.2.1'
+    libraryVersion = '1.2.2'
 
 
     licenseName = 'The MIT License (MIT)'

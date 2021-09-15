@@ -1,5 +1,9 @@
 # CHANGE LOG
 
+Version 1.2.2 (15 September, 2021)
+===================================
+*(Supports analytics-android 4.9.4 and CleverTap 4.2.0)*
+
 Version 1.2.1 (11 May, 2021)
 ===================================
 *(Supports analytics-android 4.9.4 and CleverTap 4.1.1)*
