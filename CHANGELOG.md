@@ -2,7 +2,8 @@
 
 Version 1.4.0 (22 December, 2021)
 ===================================
-*(Supports CleverTap 4.4.0)*
+- *(Supports CleverTap 4.4.0)*  
+- *Removal of  versionName/versionCode from the manifest and Support from the gradle file itself.*
 
 Version 1.3.0 (1 December, 2021)
 ===================================

@@ -59,6 +59,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 31
+        versionCode 10400
+        versionName "1.4.0"
     }
 
     compileOptions {
@@ -68,6 +70,19 @@ android {
 
     testOptions {
         unitTests.returnDefaultValues = true
+    }
+
+    buildTypes {
+        debug{
+            buildConfigField("long", "VERSION_CODE", "${defaultConfig.versionCode}")
+            buildConfigField("String","VERSION_NAME","\"${defaultConfig.versionName}\"")
+
+        }
+        release {
+            buildConfigField("long", "VERSION_CODE", "${defaultConfig.versionCode}")
+            buildConfigField("String","VERSION_NAME","\"${defaultConfig.versionName}\"")
+            
+        }
     }
 
     libraryVariants.all { variant ->
