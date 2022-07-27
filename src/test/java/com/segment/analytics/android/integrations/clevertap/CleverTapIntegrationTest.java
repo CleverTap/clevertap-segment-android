@@ -70,17 +70,15 @@ public class CleverTapIntegrationTest {
     @Mock
     public Analytics analytics;
 
-    CleverTapIntegration integration;
-    ValueMap mockSettings;
+    CleverTapIntegration ctIntegration;
+    ValueMap valueMap;
 
     @Before
     public void setUp() {
         mockStatic(CleverTapAPI.class);
 
-        mockSettings = new ValueMap();
-        mockSettings.putValue("clevertap_account_id", "acctID")
-                .putValue("clevertap_account_token", "acctToken")
-                .putValue("region", "reg");
+        valueMap = new ValueMap();
+        valueMap.putValue("clevertap_account_id", "acctID").putValue("clevertap_account_token", "acctToken").putValue("region", "reg");
 
         when(analytics.logger("CleverTap")).thenReturn(logger);
         when(analytics.getApplication()).thenReturn(context);
@@ -91,7 +89,7 @@ public class CleverTapIntegrationTest {
             // ignore
         }
 
-        integration = (CleverTapIntegration) CleverTapIntegration.FACTORY.create(mockSettings, analytics);
+        ctIntegration = (CleverTapIntegration) CleverTapIntegration.FACTORY.create(valueMap, analytics);
     }
 
     @Test
@@ -104,7 +102,7 @@ public class CleverTapIntegrationTest {
         CleverTapAPI.changeCredentials(anyString(), anyString(), anyString());
 
         //verify actual and expected instance of CleverTapIntegration are same by fields
-        assertThat(integration, samePropertyValuesAs(integrationExpected));
+        assertThat(ctIntegration, samePropertyValuesAs(integrationExpected));
 
     }
 
@@ -112,25 +110,25 @@ public class CleverTapIntegrationTest {
     public void testFactoryCreateWhenAccountIdOrTokenIsNull() {
 
         //test case 1 - when clevertap_account_id is null
-        mockSettings.putValue("clevertap_account_id", null);
-        mockSettings.putValue("clevertap_account_token", "acctToken");
-        CleverTapIntegration integrationActual = (CleverTapIntegration) CleverTapIntegration.FACTORY.create(mockSettings, analytics);
+        valueMap.putValue("clevertap_account_id", null);
+        valueMap.putValue("clevertap_account_token", "acctToken");
+        CleverTapIntegration integrationActual = (CleverTapIntegration) CleverTapIntegration.FACTORY.create(valueMap, analytics);
 
         //verify that instance of CleverTapIntegration is null for test case 1
         assertNull(integrationActual);
 
         //test case 2 - when clevertap_account_token is null
-        mockSettings.putValue("clevertap_account_id", "acctID");
-        mockSettings.putValue("clevertap_account_token", null);
-        CleverTapIntegration integrationActual1 = (CleverTapIntegration) CleverTapIntegration.FACTORY.create(mockSettings, analytics);
+        valueMap.putValue("clevertap_account_id", "acctID");
+        valueMap.putValue("clevertap_account_token", null);
+        CleverTapIntegration integrationActual1 = (CleverTapIntegration) CleverTapIntegration.FACTORY.create(valueMap, analytics);
 
         //verify that instance of CleverTapIntegration is null for test case 2
         assertNull(integrationActual1);
 
         //test case 3 - when clevertap_account_token and clevertap_account_id is null
-        mockSettings.putValue("clevertap_account_id", null);
-        mockSettings.putValue("clevertap_account_token", null);
-        CleverTapIntegration integrationActual2 = (CleverTapIntegration) CleverTapIntegration.FACTORY.create(mockSettings, analytics);
+        valueMap.putValue("clevertap_account_id", null);
+        valueMap.putValue("clevertap_account_token", null);
+        CleverTapIntegration integrationActual2 = (CleverTapIntegration) CleverTapIntegration.FACTORY.create(valueMap, analytics);
 
         //verify that instance of CleverTapIntegration is null for test case 3
         assertNull(integrationActual2);
@@ -146,7 +144,7 @@ public class CleverTapIntegrationTest {
     public void testIdentifyWhenIdentifyPayloadIsNull() {
 
         IdentifyPayload mock = mock(IdentifyPayload.class);
-        integration.identify(null);
+        ctIntegration.identify(null);
 
         //verify that when payload is null then called method returns immediately without any interactions
         Mockito.verifyNoMoreInteractions(mock);
@@ -158,7 +156,7 @@ public class CleverTapIntegrationTest {
 
         IdentifyPayload mock = mock(IdentifyPayload.class);
 
-        integration.identify(mock);
+        ctIntegration.identify(mock);
 
         //verify that when traits is null then called method returns immediately without any interactions
         verify(mock).traits();
@@ -181,7 +179,7 @@ public class CleverTapIntegrationTest {
 
 
         IdentifyPayload identifyPayload = new IdentifyPayload.Builder().traits(traits).userId(userId).build();
-        integration.identify(identifyPayload);
+        ctIntegration.identify(identifyPayload);
 
         ValueMap expectedProfile = new ValueMap()
                 .putValue("Phone", traits.phone())
@@ -198,7 +196,7 @@ public class CleverTapIntegrationTest {
         traits.putGender("male");
 
         IdentifyPayload identifyPayloadWithMale = new IdentifyPayload.Builder().traits(traits).userId(userId).build();
-        integration.identify(identifyPayloadWithMale);
+        ctIntegration.identify(identifyPayloadWithMale);
 
         expectedProfile.putValue("Gender", "M");// gender added by CleverTapIntegration
         expectedProfile.putValue("gender", "male");//gender added by segment
@@ -209,7 +207,7 @@ public class CleverTapIntegrationTest {
         traits.putGender("f");
 
         IdentifyPayload identifyPayloadWithFemale = new IdentifyPayload.Builder().traits(traits).userId(userId).build();
-        integration.identify(identifyPayloadWithFemale);
+        ctIntegration.identify(identifyPayloadWithFemale);
 
         expectedProfile.putValue("Gender", "F");// gender added by CleverTapIntegration
         expectedProfile.putValue("gender", "f");//gender added by segment
@@ -221,7 +219,7 @@ public class CleverTapIntegrationTest {
     public void testAliasWhenAliasPayloadIsNull() {
 
         AliasPayload mock = mock(AliasPayload.class);
-        integration.alias(null);
+        ctIntegration.alias(null);
 
         //verify that when payload is null then called method returns immediately without any interactions
         Mockito.verifyNoMoreInteractions(mock);
@@ -233,7 +231,7 @@ public class CleverTapIntegrationTest {
         String userId = "1010";
 
         AliasPayload aliasPayload = new AliasPayload.Builder().previousId("1234").userId(userId).build();
-        integration.alias(aliasPayload);
+        ctIntegration.alias(aliasPayload);
 
         HashMap<String, Object> expectedProfile = new HashMap();
         expectedProfile.put("Identity", userId);
@@ -247,7 +245,7 @@ public class CleverTapIntegrationTest {
     public void testTrackWhenTrackPayloadIsNull() {
 
         TrackPayload mock = mock(TrackPayload.class);
-        integration.track(null);
+        ctIntegration.track(null);
 
         //verify that when payload is null then called method returns immediately without any interactions
         Mockito.verifyNoMoreInteractions(mock);
@@ -259,7 +257,7 @@ public class CleverTapIntegrationTest {
         TrackPayload trackPayload = mock(TrackPayload.class);
         when(trackPayload.properties()).thenReturn(new Properties());
         try {
-            integration.track(trackPayload);
+            ctIntegration.track(trackPayload);
         } catch (NullPointerException e) {
             //test case will fail if any null pointer is thrown
             fail("Should not have thrown null exception");
@@ -281,7 +279,7 @@ public class CleverTapIntegrationTest {
                 .userId(userId)
                 .properties(properties)
                 .build();
-        integration.track(trackPayload);
+        ctIntegration.track(trackPayload);
 
         assertTrue(trackPayload.event().equals("Order Completed"));
         verify(clevertap, never()).pushEvent(anyString(), ArgumentMatchers.<String, Object>anyMap());
@@ -291,7 +289,7 @@ public class CleverTapIntegrationTest {
                 .userId(userId)
                 .properties(properties)
                 .build();
-        integration.track(trackPayload1);
+        ctIntegration.track(trackPayload1);
 
         assertFalse(trackPayload1.event().equals("Order Completed"));
         verify(clevertap).pushEvent(anyString(), ArgumentMatchers.<String, Object>anyMap());
@@ -303,7 +301,7 @@ public class CleverTapIntegrationTest {
         ScreenPayload mock = mock(ScreenPayload.class);
 
         try {
-            integration.screen(null);
+            ctIntegration.screen(null);
         } catch (NullPointerException e) {
             fail("Should not have thrown null exception");
         }
@@ -325,7 +323,7 @@ public class CleverTapIntegrationTest {
                 .properties(properties)
                 .build();
 
-        integration.screen(screenPayload);
+        ctIntegration.screen(screenPayload);
 
         verify(clevertap).recordScreen("s1");
 
@@ -356,7 +354,7 @@ public class CleverTapIntegrationTest {
                 .build();
 
         //test handleOrderCompleted private method
-        Whitebox.invokeMethod(integration, "handleOrderCompleted", trackPayload);
+        Whitebox.invokeMethod(ctIntegration, "handleOrderCompleted", trackPayload);
 
         /**
          * verify pushChargedEvent called on clevertap with expected params
@@ -423,7 +421,7 @@ public class CleverTapIntegrationTest {
         when(intent.getExtras()).thenReturn(expectedIntentBundle);
         when(intent.getData()).thenReturn(expectedIntentUri);
 
-        integration.onActivityCreated(activity, bundle);
+        ctIntegration.onActivityCreated(activity, bundle);
 
         //verify that setAppForeground(true) called on CleverTapAPI
         verifyStatic(CleverTapAPI.class);
@@ -438,7 +436,7 @@ public class CleverTapIntegrationTest {
     @Test
     public void testOnActivityResumed() {
         Activity activity = mock(Activity.class);
-        integration.onActivityResumed(activity);
+        ctIntegration.onActivityResumed(activity);
 
         //verify that onActivityResumed() called on CleverTapAPI
         verifyStatic(CleverTapAPI.class);
@@ -448,7 +446,7 @@ public class CleverTapIntegrationTest {
     @Test
     public void testOnActivityPaused() {
         Activity activity = mock(Activity.class);
-        integration.onActivityPaused(activity);
+        ctIntegration.onActivityPaused(activity);
 
         //verify that onActivityPaused() called on CleverTapAPI
         verifyStatic(CleverTapAPI.class);
