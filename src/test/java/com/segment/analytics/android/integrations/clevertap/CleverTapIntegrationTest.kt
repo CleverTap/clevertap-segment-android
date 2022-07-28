@@ -34,7 +34,7 @@ import java.util.GregorianCalendar
 
 @Config(manifest = Config.NONE, sdk = [Build.VERSION_CODES.P])
 @RunWith(RobolectricTestRunner::class)
-class CleverTapIntegrationTest2 {
+class CleverTapIntegrationTest {
 
     private lateinit var context: Context
     private var analytics: Analytics? = null
