@@ -22,12 +22,10 @@ import org.junit.*
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
-import org.powermock.api.mockito.PowerMockito
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows
 import org.robolectric.annotation.Config
 import java.util.*
-import kotlin.math.log
 
 
 @Config(manifest = Config.NONE, sdk = [Build.VERSION_CODES.P])
