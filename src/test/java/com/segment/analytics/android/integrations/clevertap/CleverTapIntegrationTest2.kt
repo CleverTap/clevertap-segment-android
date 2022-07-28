@@ -11,28 +11,33 @@ import android.os.Bundle
 import android.os.Looper
 import androidx.test.core.app.ApplicationProvider
 import com.clevertap.android.sdk.CleverTapAPI
+import com.clevertap.android.sdk.CleverTapInstanceConfig
 import com.segment.analytics.Analytics
 import com.segment.analytics.Properties
 import com.segment.analytics.Traits
 import com.segment.analytics.ValueMap
-import com.segment.analytics.integrations.*
+import com.segment.analytics.integrations.AliasPayload
+import com.segment.analytics.integrations.IdentifyPayload
+import com.segment.analytics.integrations.Logger
+import com.segment.analytics.integrations.ScreenPayload
+import com.segment.analytics.integrations.TrackPayload
 import com.segment.analytics.internal.Utils
-import org.hamcrest.beans.SamePropertyValuesAs
+import org.hamcrest.beans.*
 import org.junit.*
-import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
-import org.mockito.Mockito
+import org.junit.runner.*
+import org.mockito.*
+import org.mockito.Mockito.*
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows
 import org.robolectric.annotation.Config
-import java.util.*
-
+import java.util.GregorianCalendar
 
 @Config(manifest = Config.NONE, sdk = [Build.VERSION_CODES.P])
 @RunWith(RobolectricTestRunner::class)
 class CleverTapIntegrationTest2 {
+
     private lateinit var context: Context
-    private lateinit var analytics: Analytics
+    private var analytics: Analytics? = null
 
     private lateinit var valueMap: ValueMap
     private lateinit var ctIntegration: CleverTapIntegration
@@ -46,24 +51,25 @@ class CleverTapIntegrationTest2 {
             val shadowContext = Shadows.shadowOf(it)
             shadowContext.grantPermissions(Manifest.permission.INTERNET, Manifest.permission.READ_EXTERNAL_STORAGE)
         }
-        analytics = Analytics.Builder(context,"writeKey").build() //Mockito.mock(Analytics::class.java)
+        val instanceConfig = CleverTapInstanceConfig.createInstance(context, "acctID", "acctToken")
+        analytics = Analytics.Builder(context, "writeKey").build() //Mockito.mock(Analytics::class.java)
 
         valueMap = ValueMap().also {
             it.putValue("clevertap_account_id", "acctID")
             it.putValue("clevertap_account_token", "acctToken")
             it.putValue("region", "reg")
         }
-        logger = Logger("tag",Analytics.LogLevel.VERBOSE) //Mockito.mock(Logger::class.java)
+        logger = Logger("tag", Analytics.LogLevel.VERBOSE) //Mockito.mock(Logger::class.java)
 
-        ctIntegration = CleverTapIntegration.FACTORY.create(valueMap, analytics) as CleverTapIntegration
+        clevertap = spy(CleverTapAPI.instanceWithConfig(context, instanceConfig)!!)
+        mockStatic(CleverTapAPI::class.java).use {
+            `when`(CleverTapAPI.getDefaultInstance(context)).thenReturn(clevertap)
+            ctIntegration = CleverTapIntegration.FACTORY.create(valueMap, analytics) as CleverTapIntegration
 
+        }
 
-        clevertap =CleverTapAPI.getDefaultInstance(context)!!
-
-        //Mockito.`when`(CleverTapAPI.getDefaultInstance(context)).thenReturn(clevertap)
         //Mockito.`when`(analytics.logger("CleverTap")).thenReturn(logger)
-       // Mockito.`when`(analytics.application).thenReturn(context as Application)
-
+        // Mockito.`when`(analytics.application).thenReturn(context as Application)
 
         Shadows.shadowOf(Looper.getMainLooper()).idle()
     }
@@ -202,7 +208,7 @@ class CleverTapIntegrationTest2 {
         expectedProfile["Identity"] = userId
 
         //verify that pushProfile() called on CleverTapAPI with expectedProfile
-        Mockito.verify<CleverTapAPI>(clevertap).pushProfile(ArgumentMatchers.refEq(expectedProfile))
+        verify(clevertap).pushProfile(ArgumentMatchers.eq(expectedProfile))
     }
 
     @Test
@@ -345,8 +351,9 @@ class CleverTapIntegrationTest2 {
             }
         }
 
+        ctIntegration.track(trackPayload)
         //verify that pushChargedEvent() called on CleverTapAPI with expectedDetails,expectedItems
-        Mockito.verify<CleverTapAPI>(clevertap).pushChargedEvent(expectedDetails, expectedItems)
+        verify(clevertap).pushChargedEvent(expectedDetails, expectedItems)
     }
 
     @Test
@@ -391,6 +398,10 @@ class CleverTapIntegrationTest2 {
         //CleverTapAPI.onActivityPaused()
     }
 
-
+    @After
+    fun tearDown() {
+        analytics?.shutdown()
+        analytics = null
+    }
 }
 
