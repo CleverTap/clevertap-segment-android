@@ -1,6 +1,6 @@
 # CHANGE LOG
 
-Version 1.5.0 (27 July, 2022)
+Version 1.5.0 (29 July, 2022)
 ===================================
 *(Supports analytics-android 4.10.4, and Supports CleverTap 4.5.2)*
 
