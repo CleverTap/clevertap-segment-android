@@ -56,7 +56,7 @@ group = publishedGroupId
 
 android {
     compileSdkVersion 33
-    buildToolsVersion '30.0.3'
+    buildToolsVersion '33.0.0'
 
     defaultConfig {
         minSdkVersion 19
