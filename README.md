@@ -2,9 +2,8 @@ analytics-android-integration-clevertap
 ======================================
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.clevertap.android/clevertap-segment-android/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.clevertap.android/clevertap-segment-android)
-[ ![Download](https://api.bintray.com/packages/clevertap/Maven/clevertap-segment-integration/images/download.svg) ](https://bintray.com/clevertap/Maven/clevertap-segment-integration/_latestVersion)
 
-CleverTap integration for [analytics-android](https://github.com/segmentio/analytics-android).
+CleverTap integration for [Segment analytics-android](https://github.com/segmentio/analytics-android).
 
 ## Installation
 

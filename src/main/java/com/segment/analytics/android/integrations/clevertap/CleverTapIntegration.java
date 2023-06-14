@@ -95,6 +95,7 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
         this.mLogger = logger;
         if (this.cl != null) {
             this.cl.setLibrary("Segment-Android");
+            this.cl.setCustomSdkVersion("Segment-Android", (int) BuildConfig.VERSION_CODE);
         }
     }
 
@@ -164,9 +165,6 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
         }
 
         Traits traits = identify.traits();
-        if (traits == null) {
-            return;
-        }
 
         try {
             ValueMap profile = new ValueMap(Utils.transform(traits, MAP_KNOWN_PROFILE_FIELDS));
@@ -256,9 +254,6 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
         }
 
         String event = track.event();
-        if (event == null) {
-            return;
-        }
 
         if (event.equals("Order Completed")) {
             handleOrderCompleted(track);
