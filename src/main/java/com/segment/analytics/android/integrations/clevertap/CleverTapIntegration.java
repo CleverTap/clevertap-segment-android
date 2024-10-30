@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.clevertap.android.sdk.BuildConfig;
 import com.clevertap.android.sdk.CleverTapAPI;
 import com.segment.analytics.Analytics;
 import com.segment.analytics.Properties;
@@ -53,6 +54,15 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
 
     private static final Map<String, String> MAP_KNOWN_PROFILE_FIELDS;
 
+    static {
+        Map<String, String> knownFieldsMap = new LinkedHashMap<>();
+        knownFieldsMap.put("phone", "Phone");
+        knownFieldsMap.put("name", "Name");
+        knownFieldsMap.put("email", "Email");
+        knownFieldsMap.put("birthday", "DOB");
+        MAP_KNOWN_PROFILE_FIELDS = Collections.unmodifiableMap(knownFieldsMap);
+    }
+
     public static final Factory FACTORY = new Factory() {
         @Override
         public Integration<?> create(ValueMap settings, Analytics analytics) {
@@ -95,7 +105,7 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
         this.mLogger = logger;
         if (this.cl != null) {
             this.cl.setLibrary("Segment-Android");
-            this.cl.setCustomSdkVersion("Segment-Android", (int) BuildConfig.VERSION_CODE);
+            this.cl.setCustomSdkVersion("Segment-Android", BuildConfig.VERSION_CODE);
         }
     }
 
@@ -341,14 +351,4 @@ public class CleverTapIntegration extends Integration<CleverTapAPI> {
             cl.pushError("Error handling Order Completed: " + t.getMessage(), 512);
         }
     }
-
-    static {
-        Map<String, String> knownFieldsMap = new LinkedHashMap<>();
-        knownFieldsMap.put("phone", "Phone");
-        knownFieldsMap.put("name", "Name");
-        knownFieldsMap.put("email", "Email");
-        knownFieldsMap.put("birthday", "DOB");
-        MAP_KNOWN_PROFILE_FIELDS = Collections.unmodifiableMap(knownFieldsMap);
-    }
-
 }
