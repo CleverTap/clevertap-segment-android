@@ -1,6 +1,13 @@
 analytics-android-integration-clevertap
 ======================================
 
+## ⚠️ End-of-Support Announcement for Analytics-Android - March 2026 ⚠️
+The end-of-support (EoS) for the Analytics-Android SDK is scheduled for March 2026.
+
+Segment's future development efforts concentrate on the new [Analytics-Kotlin](https://segment.com/docs/connections/sources/catalog/libraries/mobile/kotlin-android/) SDK. 
+CleverTap now supports Analytics-Kotlin, for more details, see this [analytics-kotlin-clevertap repository](https://github.com/CleverTap/analytics-kotlin-clevertap/tree/main)
+Also see the official [migration guide](https://segment.com/docs/connections/sources/catalog/libraries/mobile/kotlin-android/migration/).
+
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.clevertap.android/clevertap-segment-android/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.clevertap.android/clevertap-segment-android)
 
 CleverTap integration for [Segment analytics-android](https://github.com/segmentio/analytics-android).
